@@ -1,10 +1,7 @@
-# OverWatch-2048-纯dom
-
+# OverWatch-2048
+一个用纯dom的静态页面
 #### 界面
 ![](https://github.com/ResJay/OverWatch-2048/blob/master/2048/QQ%E6%88%AA%E5%9B%BE20170702015344.png?raw=true)
-
-
-
 
 #### 全家福
 *嘻嘻O(∩_∩)O~
