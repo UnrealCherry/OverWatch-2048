@@ -1,0 +1,347 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0,width=device-width,user-scalable=no,maximum-scale=1.0"/>
+
+<title>2048小游戏</title>
+<style>
+	body{
+margin: 0;
+		padding: 0;
+-moz-user-select:none;/*火狐*/
+
+-webkit-user-select:none;/*webkit浏览器*/
+
+-ms-user-select:none;/*IE10*/
+
+-khtml-user-select:none;/*早期浏览器*/
+
+user-select:none;
+ font-size: 15px;
+	}   
+	.ppk{width:10.5em;position: absolute;top:10rem;left:35rem;font-family: "微软雅黑 Light";}
+   #al {width:22.5rem;height:30.5rem; background:#A7A7A7;margin-left: 50rem; margin-top:10rem;}
+	
+	
+   .cure{ width:5.5rem;height:7.5rem;background:#FFFFFF;margin-left:0.1rem;float:left; margin-top:0.1rem;}
+   #al-1{margin-left:0rem; }
+   img{width:5.5rem;height:7.5rem; display:inline-block;}
+	.sp{display: block;color:#F0F0F0;background:#FF7E80;}
+	.score{position:absolute;top:5.5rem;left:70rem;}
+	.score>span{background: #32D5A0;display: block;color: #FFFFFF;}
+</style>
+</head>
+
+<body>
+<div id="al">
+<div id="al-1">
+<div class="cure "></div>
+<div class="cure "></div>
+<div class="cure "></div>
+<div class="cure "></div>
+
+
+<div class="cure "></div>
+<div class="cure "></div>
+<div class="cure "></div>
+<div class="cure "></div>
+
+
+<div class="cure "></div>
+<div class="cure "></div>
+<div class="cure "></div>
+<div class="cure "></div>
+
+
+<div class="cure "></div>
+<div class="cure "></div>
+<div class="cure "></div>
+<div class="cure "></div>
+
+</div>
+</div>
+<p class="ppk">
+	鼠标按下滑动操作方块移动 
+	相同的方块会叠加
+	累加到<span class="sp">2048</span>获得胜利~
+&emsp;&emsp;&emsp;&emsp;（移动端双击全屏）
+</p>
+
+	<p class="score">
+		得分:<span>0</span>
+	</p>
+</body>
+
+<script>
+  var curearr=document.getElementsByClassName("cure");
+  var  cureimg=document.getElementsByTagName("img");
+  var pp=document.getElementsByTagName("p")[0];
+	var sc=document.getElementsByClassName("score")[0];
+	var scc=sc.getElementsByTagName("span")[0];
+	var au=document.getElementById("al");
+  var curepicarr=["2048/cube_2.png","2048/cube_4.png","2048/cube_8.png","2048/cube_16.png","2048/cube_32png","2048/cube_64.png"]
+  var  curelast=[];
+  var picteam=[];
+  var picnum=[];
+  var  cures=0;
+  var x1=0;
+  var y1=0;
+  var x2=0;
+  var y2=0;
+  var curestatus=[];
+  var curecale_all1=[];
+  var curecale_all2=[];
+  var curecale_all3=[];
+   var curecale_all4=[];
+   var  curelast=[];
+  var picteam=[];
+  var picnum=[];
+  var  cures=0;
+   var x1=0;
+   var y1=0;
+	var x2=0;
+	var y2=0;
+if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){
+  au.style.marginLeft=0;
+	au.style.marginTop=0;
+}
+   var curecale_all=[curecale_all1,curecale_all2,curecale_all3,curecale_all4 ]
+   for(var i=0;i<4;i++){
+		   curecale_all1[i]=[i,0]
+		    curecale_all2[i]=[i+4,0]
+			 curecale_all3[i]=[i+8,0]
+			  curecale_all4[i]=[i+12,0]
+	  }
+	function curecreate2(){
+					     curestatus=[];
+			for(var i=0;i<curearr.length;i++){
+	           if(curearr[i].lastChild==null){
+				   
+				    curestatus.push(i);}}
+					   
+					   var randoma=curestatus[parseInt(Math.random()*curestatus.length)];
+					   
+					   var a=document.createElement("img");  
+				        curearr[randoma].appendChild(a);
+						a.src=curepicarr[0]; 
+						a.alt=2;			
+						if(randoma<4){
+					 curecale_all1[randoma]=[""+randoma+"",parseInt(a.alt)]}
+					 if(randoma>=4&&randoma<8){
+					 curecale_all2[randoma%4]=[""+randoma+"",parseInt(a.alt)]}
+					 if(randoma>=8&&randoma<12){
+					curecale_all3[randoma%4]=[""+randoma+"",parseInt(a.alt)]}
+					 if(randoma>=12&&randoma<16){
+					curecale_all4[randoma%4]=[""+randoma+"",parseInt(a.alt)]}
+						
+				}
+	 curecreate2();	
+      curecreate2();
+      curecreate2();	
+	  curecreate2();
+	   document.onmousedown=function(ev){  
+	    
+		   var ev=ev||event;
+		 x1=ev.clientX;
+		 y1=ev.clientY;
+		   
+		   
+		    
+			
+	 	   
+	   }
+	   
+	    document.onmouseup=function(ev){   
+	var ev=ev||event;
+		   x2=ev.clientX;
+		    y2=ev.clientY;
+		if(x2==x1&&y2==y1){ return false};
+		   if(x2-x1>0&&Math.abs(y2-y1)<40){cures=0;}// rigth
+		   if(x1-x2>0&&Math.abs(y2-y1)<40){cures=1;} //left
+		   if(y2-y1>0&&Math.abs(x2-x1)<40){cures=2;}//down
+		   if(y1-y2>0&&Math.abs(x2-x1)<40){cures=3;}//top
+		console.log(x1,x2,y1,y2)
+		   curecale();
+		 curecreate2();
+	   }
+	   
+
+	   document.onmouseover=function(ev){    return false}
+	   
+	   	   document.ontouchstart=function(ev){  
+     var touchs=ev.changedTouches[0]; 
+		 x1=touchs.clientX;
+		 y1=touchs.clientY;
+		   
+		
+			
+	 	   
+	   }
+	   
+	  document.ontouchend=function(ev){   
+	var touchs=ev.changedTouches[0];
+		   x2=touchs.clientX;
+		    y2=touchs.clientY;
+		if(x2==x1&&y2==y1){ return false};
+		   if(x2-x1>0&&Math.abs(y2-y1)<50){cures=0;}// rigth
+		   if(x1-x2>0&&Math.abs(y2-y1)<50){cures=1;} //left
+		   if(y2-y1>0&&Math.abs(x2-x1)<50){cures=2;}//down
+		   if(y1-y2>0&&Math.abs(x2-x1)<50){cures=3;}//top
+		console.log(x1,x2,y1,y2)
+		   curecale();
+		 curecreate2();
+	   }
+	  
+	   document.ontouchmove=function(ev){    return false}
+	   
+		  function curecale(){
+				for(var i=0;i<4;i++){
+				 curecale_all[i].forEach(
+				 function (x,i,a){
+					  var x=null;
+					 var y=null;
+			
+					 if(cures==0){
+								   if(a[i+1]!==undefined){
+									  x=a[i][1]; y=a[i+1][1];  
+						  if(y==0){a[i+1][1]=y=x;a[i][1]=x=0}
+						  if(y==x){a[i+1][1]=y+=x;a[i][1]=x=0;
+								
+								   scc.innerHTML=parseInt(scc.innerHTML)+200}
+	
+					  }	 
+								 }
+					 if(cures==1){
+						   if(a[a.length-i-2]!==undefined){
+									  x=a[a.length-1-i][1]; y=a[a.length-i-2][1];  
+						  if(y==0){a[a.length-i-2][1]=y=x;a[a.length-1-i][1]=x=0}
+						  if(y==x){a[a.length-i-2][1]=y+=x;a[a.length-1-i][1]=x=0;
+								   scc.innerHTML=parseInt(scc.innerHTML)+200}
+	
+					  }	 
+						 
+						 
+						
+				 
+						 }
+			
+			
+						 
+					 
+					 
+				 
+				 }
+				 )}
+			   if(cures==2){  curecale_all.forEach(function(x,i,a){
+	  for(var y=0;y<curecale_all.length;y++){
+	  
+		  if(a[y+1]!==undefined){
+			  
+		if(a[y+1][i][1]==0){a[y+1][i][1]=a[y][i][1];a[y][i][1]=0}
+		 if(a[y+1][i][1]==a[y][i][1]){a[y+1][i][1]+=a[y][i][1];a[y][i][1]=0;
+									 scc.innerHTML=parseInt(scc.innerHTML)+200} 
+		  }
+		  
+		  
+	  }
+  })}
+                if(cures==3){  curecale_all.forEach(function(x,i,a){
+	  for(var y=0;y<curecale_all.length;y++){
+	  
+		  if(a[y+1]!==undefined){
+			  
+		if(a[a.length-2-y][i][1]==0){a[a.length-2-y][i][1]=a[a.length-1-y][i][1];a[a.length-1-y][i][1]=0}
+		 if(a[a.length-2-y][i][1]==a[a.length-1-y][i][1]){a[a.length-2-y][i][1]+=a[a.length-1-y][i][1];a[a.length-1-y][i][1]=0;
+										 scc.innerHTML=parseInt(scc.innerHTML)+200				 } 
+		  }
+		  
+		  
+	  }
+  })}
+  
+
+					
+						
+			  
+				curelast=steamall(curecale_all);
+				
+			ccure(curelast);
+			  
+   for(var ww=0;ww<curelast.length;ww++){if(curelast[ww]==2048){alert("You Win")}}
+	
+			}		 
+		function steamall(arr){
+				result=[]
+			function steam(arr){		
+ if(Array.isArray(arr)){
+ arr.forEach(function(a,b,c){
+   if(Array.isArray(a)){steam(a)}
+   else{result.push(a)}
+ 
+ })
+ }
+
+    
+
+
+
+}
+                steam(arr);
+          return result;
+}	
+	function ccure(currlast){
+  for(var i=0;i<curearr.length;i++){
+	   if(curearr[i].hasChildNodes()){
+	  curearr[i].removeChild(curearr[i].childNodes[0]) };
+  }
+ picteam=[];
+  picnum=[];
+ for(var b=0;b<curelast.length;b++){
+	 if(b%2==0){
+	 picteam.push(curelast[b]);  } 
+	 else{ picnum.push(curelast[b])}
+     } 
+
+
+
+   for(var p=0;p<picteam.length;p++){
+	   if(picnum[p]!==0){
+	var a=document.createElement("img")
+	   curearr[picteam[p]].appendChild(a);
+	   a.src="2048/cube_"+picnum[p]+".png"
+	   }
+   }
+ 
+	
+	
+	
+		
+		}
+//判断设备
+  
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+</html>
